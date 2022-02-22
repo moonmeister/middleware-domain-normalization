@@ -1,43 +1,17 @@
-import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export function middleware(req: NextRequest, ev: NextFetchEvent) {
+export function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
-
-  const isDevelopment = process.env.NODE_ENV === "development";
-  const isStaticFileRequest = url.pathname.includes(".");
+  const normalizedHost = new URL(process.env.NORMALIZED_URL);
   const host = req.headers.get("host");
 
-  const normalizedHost = new URL(process.env.NORMALIZED_URL);
+  const isDevelopment = process.env.NODE_ENV === "development";
   const isCorrectHostname = host.split(":")[0] === normalizedHost.hostname;
 
-  if (!isStaticFileRequest && !isDevelopment && !isCorrectHostname) {
-    console.log(
-      `${host.split(":")[0]} !== ${normalizedHost.hostname}`,
-      !isCorrectHostname,
-      !isStaticFileRequest,
-      !isDevelopment
-    );
+  if (!isDevelopment && !isCorrectHostname) {
     url.protocol = normalizedHost.protocol;
     url.host = normalizedHost.host;
     url.port = normalizedHost.port;
-    console.log(`Redirecting from ${host} to ${url.host}`);
     return NextResponse.redirect(url);
-  }
-
-  if (isStaticFileRequest) {
-    console.log(`Not redirecting because is static file: ${url.pathname}`);
-    return;
-  }
-
-  if (isDevelopment) {
-    console.log(`Not redirecting because NODE_ENV === ${process.env.NODE_ENV}`);
-    return;
-  }
-
-  if (isCorrectHostname) {
-    console.log(
-      `Not redirecting because hostname is already "${url.hostname}"`
-    );
-    return;
   }
 }
