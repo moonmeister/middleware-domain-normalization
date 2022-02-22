@@ -9,12 +9,12 @@ export function middleware(req: NextRequest, ev: NextFetchEvent) {
 
   const normalizedHost = new URL(process.env.NORMALIZED_URL);
   const isCorrectScheme = url.protocol === normalizedHost.protocol;
-  const isCorrectHostname = host.split(":")[0] === normalizedHost.hostname;
+  const isCorrectHostname = host === normalizedHost.host;
   const isCorrectHost = isCorrectScheme && isCorrectHostname;
 
   if (!isStaticFileRequest && !isDevelopment && !isCorrectHost) {
     url.protocol = normalizedHost.protocol;
-    url.hostname = normalizedHost.hostname;
+    url.host = normalizedHost.host;
     return NextResponse.redirect(url);
   }
 
