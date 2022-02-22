@@ -8,13 +8,12 @@ export function middleware(req: NextRequest, ev: NextFetchEvent) {
   const host = req.headers.get("host");
 
   const normalizedHost = new URL(process.env.NORMALIZED_URL);
-  const isCorrectScheme = url.protocol === normalizedHost.protocol;
   const isCorrectHostname = host.split(":")[0] === normalizedHost.hostname;
-  const isCorrectHost = isCorrectScheme && isCorrectHostname;
 
-  if (!isStaticFileRequest && !isDevelopment && !isCorrectHost) {
+  if (!isStaticFileRequest && !isDevelopment && !isCorrectHostname) {
     console.log(
       `${host.split(":")[0]} !== ${normalizedHost.hostname}`,
+      !isCorrectHostname,
       !isStaticFileRequest,
       !isDevelopment
     );
