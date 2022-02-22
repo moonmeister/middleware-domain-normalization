@@ -15,6 +15,7 @@ export function middleware(req: NextRequest, ev: NextFetchEvent) {
   if (!isStaticFileRequest && !isDevelopment && !isCorrectHost) {
     url.protocol = normalizedHost.protocol;
     url.host = normalizedHost.host;
+    url.port = normalizedHost.port;
     return NextResponse.redirect(url);
   }
 
