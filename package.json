@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 8080",
     "clean": "rimraf .next node_modules",
     "lint": "next lint",
     "generate": "gqty generate",
