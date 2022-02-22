@@ -13,6 +13,7 @@ export function middleware(req: NextRequest, ev: NextFetchEvent) {
   const isCorrectHost = isCorrectScheme && isCorrectHostname;
 
   if (!isStaticFileRequest && !isDevelopment && !isCorrectHost) {
+    console.log(`${host.split(":")[0]} !== ${normalizedHost.hostname}`);
     url.protocol = normalizedHost.protocol;
     url.host = normalizedHost.host;
     url.port = normalizedHost.port;
