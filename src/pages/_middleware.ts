@@ -3,14 +3,15 @@ import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 export function middleware(req: NextRequest, ev: NextFetchEvent) {
   const url = req.nextUrl.clone();
 
-  console.log(JSON.stringify(url, null, 2));
+  console.log("request", JSON.stringify(url, null, 2));
 
-  const isDevelopment = process.env.NODE_ENV === "development";
+  const isDevelopment = false;
+  // const isDevelopment = process.env.NODE_ENV === "development";
   const isStaticFileRequest = url.pathname.includes(".");
   const host = req.headers.get("host");
 
   const normalizedHost = new URL(process.env.NORMALIZED_URL);
-  console.log(JSON.stringify(normalizedHost, null, 2));
+  console.log("normalized", JSON.stringify(normalizedHost, null, 2));
 
   const isCorrectScheme = url.protocol === normalizedHost.protocol;
   const isCorrectHostname = host === normalizedHost.host;
@@ -35,7 +36,7 @@ export function middleware(req: NextRequest, ev: NextFetchEvent) {
   url.protocol = normalizedHost.protocol;
   url.host = normalizedHost.host;
 
-  console.log(JSON.stringify(url, null, 2));
+  console.log("destination", JSON.stringify(url, null, 2));
 
   return NextResponse.redirect(url);
 }
