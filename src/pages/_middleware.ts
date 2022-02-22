@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(req: NextRequest) {
+  if (!process.env.NORMALIZED_URL) {
+    console.error(
+      "You must provide a NORMALIZED_URL environment variable for the domain normalization middleware to work correctly"
+    );
+    return NextResponse.next();
+  }
+
   const url = req.nextUrl.clone();
   const normalizedHost = new URL(process.env.NORMALIZED_URL);
   const host = req.headers.get("host");
