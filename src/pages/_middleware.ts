@@ -9,7 +9,7 @@ export function middleware(req: NextRequest, ev: NextFetchEvent) {
 
   const normalizedHost = new URL(process.env.NORMALIZED_URL);
   const isCorrectScheme = url.protocol === normalizedHost.protocol;
-  const isCorrectHostname = host === normalizedHost.host;
+  const isCorrectHostname = host.split(":")[0] === normalizedHost.hostname;
   const isCorrectHost = isCorrectScheme && isCorrectHostname;
 
   if (!isStaticFileRequest && !isDevelopment && !isCorrectHost) {
