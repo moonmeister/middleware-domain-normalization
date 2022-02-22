@@ -16,6 +16,7 @@ export function middleware(req: NextRequest, ev: NextFetchEvent) {
     url.protocol = normalizedHost.protocol;
     url.host = normalizedHost.host;
     url.port = normalizedHost.port;
+    console.log(`Redirecting from ${host} to ${url.host}`);
     return NextResponse.redirect(url);
   }
 
