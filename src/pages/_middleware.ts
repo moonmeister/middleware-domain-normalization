@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(req: NextRequest) {
   const isDevelopment = process.env.NODE_ENV === "development";
-  const hasEnvVariable = !process.env.NORMALIZED_URL;
+  const hasEnvVariable = !!process.env.NORMALIZED_URL;
 
-  if (isDevelopment || !hasEnvVariable) {
-    !hasEnvVariable &&
+  if (!hasEnvVariable) {
+    !isDevelopment &&
       console.error(
         "You must provide a NORMALIZED_URL environment variable for the domain normalization middleware to work correctly"
       );
